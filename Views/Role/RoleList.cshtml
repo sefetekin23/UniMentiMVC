@@ -1,0 +1,46 @@
+﻿@using UniMenti.ViewModels;
+@using Microsoft.AspNetCore.Identity;
+@model RoleVM;
+@inject RoleManager<IdentityRole> roleManager
+
+
+@{
+    ViewData["Title"] = "RoleList";
+}
+
+<h2>Students</h2>
+
+<form asp-action="Create" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-1">
+        <label asp-for="SelectedRole" class="control-label"> Eklenecek Rol</label>
+        <input asp-for="SelectedRole" class="form-control" />
+        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Create" class="btn btn-primary btn-sm float-end" />
+
+
+ </form>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Current Roles</th>
+
+            <!-- Add more columns if needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var name in roleManager.Roles.Select(x => x.Name).ToList())
+        {
+            <tr>
+
+                <td>@name</td>
+
+                <!-- Add more columns if needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+

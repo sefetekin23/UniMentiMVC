@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using UniMenti.ViewModels
+@model RoleVM
+@inject UserManager<AppUser> userManager
+
+<h2>Manage Users and Roles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Assign Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    @{
+                        var roles = await userManager.GetRolesAsync(user);
+                        var rolesString = string.Join(", ", roles);
+                    }
+                    @rolesString
+                </td>
+                <td>
+                    <form id="submitRoleForm" asp-controller="Authorisation" asp-action="AssignRole" method="post">
+                        <input type="hidden" name="user.Id" value="@user.Id" />
+                        <input type="hidden" name="user.UserName" value="@user.UserName" />
+                        <input type="hidden" name="user.Email" value="@user.Email" />
+                        
+                        @Html.DropDownListFor(model => model.SelectedRole, Model.Roles, new { @class = "form-control" })
+                        <button type="submit" class="btn btn-primary">Assign Role</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // JavaScript or jQuery to handle form submission
+    $(function() {
+        $('#submitRoleForm').submit(function(e) {
+            e.preventDefault();
+
+            var formData = $(this).serialize(); // Serialize form data
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                success: function(response) {
+                    // Handle success response
+                },
+                error: function(error) {
+                    // Handle error
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,46 @@
+﻿@using UniMenti.ViewModels;
+@model UserListVM
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="TutorList" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.Users[0].name)</a>
+            </th>
+            <th>
+                <a asp-action="TutorList" asp-route-sortOrder="@ViewData["UsernameSortParam"]">@Html.DisplayNameFor(model => model.Users[0].UserName)</a>
+            </th>
+            <th>
+                <a asp-action="TutorList" asp-route-sortOrder="@ViewData["EmailSortParam"]">@Html.DisplayNameFor(model => model.Users[0].Email)</a>
+            </th>
+            <th>
+                <a asp-action="TutorList" asp-route-sortOrder="@ViewData["AddressSortParam"]">@Html.DisplayNameFor(model => model.Users[0].address)</a>
+            </th>
+            <!-- Add more columns if needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.name</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.address</td>
+                <!-- Add more columns if needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="TutorList" method="get">
+    <div class="form-group">
+        <label asp-for="SearchString">Search:</label>
+        <input type="text" class="form-control" asp-for="SearchString" value="@Model.SearchString" />
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Filter</button>
+</form>
+
+
+
